@@ -62,3 +62,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Docs internas (não versionadas) ###
+/docs
