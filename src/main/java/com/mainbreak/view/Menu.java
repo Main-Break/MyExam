@@ -16,7 +16,7 @@ public class Menu {
         this.line = line;
     }
 
-    private void printLine() {
+    public void printLine() {
 
         // Cria o primeiro caractere de canto.
         System.out.print("+");
@@ -29,7 +29,7 @@ public class Menu {
         System.out.println("+");
     }
 
-    private void printHeader(String header) {
+    public void printHeader(String header) {
         // Imprime o cabeçalho no CLI
         this.printLine();
         System.out.println(header);
