@@ -36,13 +36,13 @@ public class Menu {
         this.printLine();
     }
 
-    public void MenuOptions(String title, ArrayList<Option> list) {
+    public void menuOptions(String title, ArrayList<Option> list) {
         // Mostra o menu de opções.
         this.printHeader(title);
 
         for(int i = 0; i < list.size(); i++) {
 
-            System.out.printf("[%d] %s", list.get(i).num, list.get(i).description );
+            System.out.printf("[%d] %s \n", list.get(i).num, list.get(i).description );
         }
         this.printLine();
     }
