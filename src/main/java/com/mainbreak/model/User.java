@@ -1,25 +1,28 @@
 package com.mainbreak.model;
 
+import com.mainbreak.interfaces.iUser;
+import com.mainbreak.model.enums.UserType;
+
 import java.util.UUID;
 
-public class User {
+public abstract class User implements iUser {
     // UUID-v4, não utilizar um ID incremental!
-    private String ID;
+    protected String ID;
 
     // Informações básicas;
-    private String name;
+    protected String name;
 
     // Salvar apenas com números, em pontuações.
-    private String CPF;
-    private String email;
+    protected String CPF;
+    protected String email;
 
     // Só salvar em Hash, a mesma não deve ser salva pura.
-    private String passwordHash;
+    protected String passwordHash;
 
     // "doctor" ou "patient" é usado pela Factory.
-    private String type;
+    protected UserType type;
 
-    protected User(String name, String CPF, String email, String passwordHash, String type) {
+    protected User(String name, String CPF, String email, String passwordHash, UserType type) {
         this.ID = UUID.randomUUID().toString();
         this.name = name;
         this.CPF = CPF;
@@ -32,5 +35,9 @@ public class User {
         return ID;
     }
 
+    @Override
+    public void edit() {
+
+    }
 }
 
