@@ -4,9 +4,21 @@ package com.mainbreak.model;
 public class Doctor extends User{
     private String crm;
     private String specialty;
+
+    // Inicializa a conta com a role de médico e guarda os dados profissionais.
     public Doctor(String name, String CPF, String email, String passwordHash, String crm, String specialty) {
-        super(name, CPF, email, passwordHash, "doctor");
+        super(name, CPF, email, passwordHash, UserRole.DOCTOR);
         this.crm = crm;
         this.specialty = specialty;
+    }
+
+    // Retorna o registro profissional usado para identificar o médico.
+    public String getCrm() {
+        return crm;
+    }
+
+    // Retorna a especialidade exibida no perfil médico.
+    public String getSpecialty() {
+        return specialty;
     }
 }

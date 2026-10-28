@@ -1,36 +1,54 @@
 package com.mainbreak.model;
 
+import com.mainbreak.security.PasswordHasher;
+
 import java.util.UUID;
 
 public class User {
-    // UUID-v4, não utilizar um ID incremental!
-    private String ID;
+    private final String id;
+    private final String name;
+    private final String CPF;
+    private final String email;
+    private final String passwordHash;
+    private final UserRole role;
 
-    // Informações básicas;
-    private String name;
-
-    // Salvar apenas com números, em pontuações.
-    private String CPF;
-    private String email;
-
-    // Só salvar em Hash, a mesma não deve ser salva pura.
-    private String passwordHash;
-
-    // "doctor" ou "patient" é usado pela Factory.
-    private String type;
-
-    protected User(String name, String CPF, String email, String passwordHash, String type) {
-        this.ID = UUID.randomUUID().toString();
+    // Inicializa os dados compartilhados por todos os perfis e gera um identificador UUID.
+    protected User(String name, String CPF, String email, String passwordHash, UserRole role) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.CPF = CPF;
         this.email = email;
         this.passwordHash = passwordHash;
-        this.type = type;
+        this.role = role;
     }
 
+    // Retorna o UUID usado para identificar a conta sem depender de um número incremental.
     public String getId() {
-        return ID;
+        return id;
     }
 
-}
+    // Retorna o nome para exibição em menus e listagens administrativas.
+    public String getName() {
+        return name;
+    }
 
+    // Retorna o CPF para validação de unicidade e administração da conta.
+    public String getCPF() {
+        return CPF;
+    }
+
+    // Retorna o e-mail usado para localizar a conta durante o login.
+    public String getEmail() {
+        return email;
+    }
+
+    // Retorna o perfil que determina quais operações o usuário pode acessar.
+    public UserRole getRole() {
+        return role;
+    }
+
+    // Compara uma senha digitada com o hash sem expor o hash ao controller ou à tela.
+    public boolean passwordMatches(String password) {
+        return PasswordHasher.matches(password, passwordHash);
+    }
+}
