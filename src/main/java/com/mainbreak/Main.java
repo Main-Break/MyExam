@@ -4,6 +4,7 @@ import com.mainbreak.controller.DoctorController;
 import com.mainbreak.controller.PatientController;
 import com.mainbreak.model.DoctorFactory;
 import com.mainbreak.model.PatientFactory;
+import com.mainbreak.repository.AppointmentRepository;
 import com.mainbreak.repository.DoctorRepository;
 import com.mainbreak.repository.PatientRepository;
 import com.mainbreak.security.PasswordHasher;
@@ -25,6 +26,8 @@ public class Main {
 
         DoctorRepository doctorRepository = new DoctorRepository();
         PatientRepository patientRepository = new PatientRepository();
+        AppointmentRepository appointmentRepository = new AppointmentRepository();
+
         PasswordHasher passwordHasher = new Pbkdf2PasswordHasher(new SecureRandom());
         RegistrationValidationHandler validationChain = createRegistrationValidationChain(
                 doctorRepository, patientRepository);
@@ -39,10 +42,14 @@ public class Main {
 
         DoctorController controllerDoctor = new DoctorController(doctorRepository, registrationService);
         PatientController controllerPatient = new PatientController(registrationService);
+        // AppointmentController controllerAppointment = new AppointmentController(appointmentRepository, doctorRepository, patientRepository);
+
         CLI menuCLI = new CLI();
 
         menuCLI.addOption(1, "Cadastrar Medico", new CreateDoctorAction(controllerDoctor));
         menuCLI.addOption(2, "Cadastrar Paciente", new CreatePatientAction(controllerPatient));
+        // menuCLI.addOption(3, "Cadastrar Consulta", new CreateAppointmentAction(controllerAppointment));
+
         menuCLI.startCLI();
     }
 
