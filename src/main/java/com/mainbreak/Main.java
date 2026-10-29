@@ -9,6 +9,7 @@ import com.mainbreak.repository.AppointmentRepository;
 import com.mainbreak.view.CLI;
 import com.mainbreak.view.action.CreateDoctorAction;
 import com.mainbreak.view.action.CreatePatientAction;
+import com.mainbreak.view.action.LoggingActionDecorator;
 
 public class Main {
 
@@ -24,10 +25,17 @@ public class Main {
 
         CLI menuCLI = new CLI();
 
+        /*
+        Antes (Kainan):
         menuCLI.addOption(1, "Cadastrar Medico", new CreateDoctorAction(controllerDoctor));
         menuCLI.addOption(2, "Cadastrar Paciente", new CreatePatientAction(controllerPatient));
-        // menuCLI.addOption(3, "Cadastrar Consulta", new CreateAppointmentAction(controllerAppointment));
+        menuCLI.addOption(3, "Cadastrar Consulta", new CreateAppointmentAction(controllerAppointment));
+        */
 
+        //Depois (João):
+        menuCLI.addOption(1, "Cadastrar Medico", new LoggingActionDecorator(new CreateDoctorAction(controllerDoctor)));
+        menuCLI.addOption(2, "Cadastrar Paciente", new LoggingActionDecorator(new CreatePatientAction(controllerPatient)));
+        
         menuCLI.startCLI();
     }
 }
