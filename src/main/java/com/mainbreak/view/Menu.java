@@ -1,76 +1,49 @@
 package com.mainbreak.view;
 
-import java.io.Console;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Menu {
-    private final Scanner scanner;
 
-    // Usa a entrada padrão para que o menu possa ser executado em um terminal.
-    public Menu() {
-        this.scanner = new Scanner(System.in);
+    private int width = 30;
+    private char corner = '+';
+    private char line = '-';
+
+    public Menu () {}
+
+    public Menu(int width, char corner, char line) {
+        this.width = width;
+        this.corner = corner;
+        this.line = line;
     }
 
-    // Exibe uma pergunta e devolve a resposta digitada para o controller.
-    public String readText(String prompt) {
-        System.out.print(prompt);
-        if (!scanner.hasNextLine()) {
-            throw new IllegalStateException("A entrada foi encerrada durante a leitura.");
+    public void printLine() {
+
+        // Cria o primeiro caractere de canto.
+        System.out.print("+");
+
+        // Cria a linha com o tamanho definido pela função.
+        for(int i = 0; i < this.width; i++) {
+            System.out.print("-");
         }
-        return scanner.nextLine().trim();
+        // Adiciona o final da linha.
+        System.out.println("+");
     }
 
-    // Lê uma senha sem exibi-la quando há terminal interativo e oferece fallback para IDEs.
-    public String readPassword(String prompt) {
-        Console console = System.console();
-        if (console != null) {
-            char[] password = console.readPassword("%s", prompt);
-            if (password == null) {
-                throw new IllegalStateException("A entrada foi encerrada durante a leitura da senha.");
-            }
-            String result = new String(password);
-            java.util.Arrays.fill(password, '\0');
-            return result;
-        }
-        System.out.print(prompt);
-        if (!scanner.hasNextLine()) {
-            throw new IllegalStateException("A entrada foi encerrada durante a leitura da senha.");
-        }
-        return scanner.nextLine();
+    public void printHeader(String header) {
+        // Imprime o cabeçalho no CLI
+        this.printLine();
+        System.out.println(header);
+        this.printLine();
     }
 
-    // Lê uma opção numérica e repete a pergunta enquanto a entrada não estiver no intervalo aceito.
-    public int readOption(String prompt, int minimum, int maximum) {
-        while (true) {
-            String value = readText(prompt);
-            try {
-                int option = Integer.parseInt(value);
-                if (option >= minimum && option <= maximum) {
-                    return option;
-                }
-            } catch (NumberFormatException ignored) {
-                // A mensagem abaixo informa como corrigir uma opção inválida.
-            }
-            showMessage("Digite um número entre " + minimum + " e " + maximum + ".");
-        }
-    }
+    public void menuOptions(String title, ArrayList<Option> list) {
+        // Mostra o menu de opções.
+        this.printHeader(title);
 
-    // Lê uma data ISO e solicita novamente até receber um valor válido.
-    public LocalDate readDate(String prompt) {
-        while (true) {
-            String value = readText(prompt);
-            try {
-                return LocalDate.parse(value);
-            } catch (DateTimeParseException exception) {
-                showMessage("Data inválida. Use o formato AAAA-MM-DD.");
-            }
-        }
-    }
+        for(int i = 0; i < list.size(); i++) {
 
-    // Exibe mensagens de resultado e validação para a pessoa usuária.
-    public void showMessage(String message) {
-        System.out.println(message);
+            System.out.printf("[%d] %s \n", list.get(i).num, list.get(i).description );
+        }
+        this.printLine();
     }
 }

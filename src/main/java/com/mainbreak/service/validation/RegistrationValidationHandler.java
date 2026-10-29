@@ -1,17 +1,22 @@
 package com.mainbreak.service.validation;
 
-import com.mainbreak.factory.UserRegistration;
+import com.mainbreak.model.UserRegistration;
 
+/**
+ * Elo base da validação de cadastros.
+ *
+ * @note Papel no Padrão: Handler abstrato que liga validadores da Chain of Responsibility.
+ */
 public abstract class RegistrationValidationHandler {
     private RegistrationValidationHandler next;
 
-    // Liga o próximo validador para que cada regra seja executada em sequência.
+    // Configura o próximo elo e retorna-o para permitir encadear handlers.
     public RegistrationValidationHandler setNext(RegistrationValidationHandler next) {
         this.next = next;
         return next;
     }
 
-    // Executa esta regra e encaminha o cadastro adiante somente se ela passar.
+    // Executa esta regra e continua pela cadeia somente se a validação passar.
     public final void validate(UserRegistration registration) {
         validateCurrent(registration);
         if (next != null) {
@@ -19,6 +24,6 @@ public abstract class RegistrationValidationHandler {
         }
     }
 
-    // Define a validação específica que cada elo da cadeia deve executar.
+    // Define a verificação específica implementada por cada elo.
     protected abstract void validateCurrent(UserRegistration registration);
 }
