@@ -4,6 +4,7 @@ import com.mainbreak.model.Patient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PatientRepository {
 
@@ -13,13 +14,25 @@ public class PatientRepository {
         this.patients.add(patient);
     }
 
-    public Patient findById(String id) {
+    public Optional<Patient> findById(String id) {
         for (Patient patient : this.patients) {
             if (patient.getID().equals(id)) {
-                return patient;
+                return Optional.of(patient);
             }
         }
-        return null;
+        return Optional.empty();
+    }
+
+    public Optional<Patient> findByEmail(String email) {
+        return this.patients.stream()
+                .filter(patient -> patient.getEmail().equalsIgnoreCase(email.trim()))
+                .findFirst();
+    }
+
+    public Optional<Patient> findByCPF(String CPF) {
+        return this.patients.stream()
+                .filter(patient -> patient.getCPF().equals(CPF.trim()))
+                .findFirst();
     }
 
     public List<Patient> findAll() {

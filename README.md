@@ -14,11 +14,19 @@ Sistema de gestão de consultas médicas (Doctor, Nurse, Patient, Appointment), 
 | Padrão | Categoria | Problema de negócio resolvido |
 |---|---|---|
 | Factory Method | Criacional | Centraliza a criação de `Doctor`, `Nurse` e `Patient` em classes dedicadas (`DoctorFactory`, `NurseFactory`, `PatientFactory`). Os construtores dos modelos são `protected`, garantindo que nenhuma outra camada crie um usuário fora desse ponto controlado. |
+| Builder | Criacional | Monta `UserRegistration` passo a passo, separando dados comuns dos campos específicos do médico e do paciente. O log do terminal indica cada perfil montado. |
 | Command | Comportamental | Cada opção do menu (`Cadastrar Médico`, `Cadastrar Paciente`, etc.) é encapsulada como um objeto `MenuAction` (`CreateDoctorAction`, `CreatePatientAction`). O CLI não conhece a lógica de cada cadastro, apenas invoca `execute()`, permitindo adicionar novas opções sem alterar o laço principal do menu. |
-| _A definir_ | Criacional | _Pendente: segundo padrão criacional (ex.: Builder para montar `Appointment` com dados opcionais, Singleton para um serviço compartilhado, etc.)._ |
 | _A definir_ | Estrutural | _Pendente: primeiro padrão estrutural (ex.: Adapter, Decorator, Facade)._ |
 | _A definir_ | Estrutural | _Pendente: segundo padrão estrutural._ |
-| _A definir_ | Comportamental | _Pendente: segundo padrão comportamental (ex.: Observer para notificar mudança de status de consulta, State para o ciclo de vida do `Appointment`)._ |
+| Chain of Responsibility | Comportamental | Encadeia validação dos campos comuns, dos campos específicos do perfil e da unicidade de e-mail, CPF e CRM. Cada elo registra no terminal quando é acionado. |
+
+O cadastro é coordenado por `RegistrationService`, que recebe as factories, o `PasswordHasher`, os repositórios e a cadeia de validação por construtor. A senha é transformada em hash antes de finalizar o `UserRegistration`; somente o hash é encaminhado à Factory Method.
+
+## Validação de cadastro e senha
+
+`RegistrationValidationHandler` define a cadeia: `CommonRegistrationValidationHandler` verifica os campos comuns, `ProfileRegistrationValidationHandler` verifica data de nascimento ou dados profissionais, e `UniqueRegistrationValidationHandler` verifica e-mail, CPF e CRM nos repositórios. Os métodos de busca retornam `Optional`, e o cadastro só continua quando os valores estão disponíveis.
+
+`PasswordHasher` é uma interface injetada no serviço. `Pbkdf2PasswordHasher` implementa PBKDF2 com HMAC-SHA-256, salt aleatório e 120.000 iterações. A aplicação usa somente APIs padrão do Java e não adiciona bibliotecas externas.
 
 ## Estrutura do projeto
 
@@ -28,7 +36,10 @@ src/main/java/com/mainbreak/
 ├── model/
 │   ├── enums/        # UserType, AppointmentStatus
 │   └── *Factory.java # Factory Method
-├── repository/       # Armazenamento em memória (ArrayList)
+├── repository/       # Armazenamento em memória (ArrayList) e buscas por perfil
+├── security/         # Abstração e implementação de hash de senha
+├── service/          # Cadastro com Builder, Factory Method e Chain of Responsibility
+│   └── validation/   # Elos de validação de cadastro
 ├── view/
 │   └── action/       # Command (MenuAction e implementações)
 └── Main.java          # Ponto de entrada, monta o menu interativo

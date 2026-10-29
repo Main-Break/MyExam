@@ -1,28 +1,25 @@
 package com.mainbreak.controller;
 
 import com.mainbreak.model.Doctor;
-import com.mainbreak.model.DoctorFactory;
-import com.mainbreak.model.UserFactory;
 import com.mainbreak.repository.DoctorRepository;
+import com.mainbreak.service.RegistrationService;
 
 public class DoctorController {
-
     private final DoctorRepository doctorRepository;
+    private final RegistrationService registrationService;
 
-    public DoctorController(DoctorRepository doctorRepository) {
+    public DoctorController(DoctorRepository doctorRepository,
+                            RegistrationService registrationService) {
         this.doctorRepository = doctorRepository;
+        this.registrationService = registrationService;
     }
 
-    public Doctor create(String name, String CPF, String email, String passwordHash, String crm, String specialty) {
-        UserFactory factory = new DoctorFactory(crm, specialty);
-        Doctor doctor = (Doctor) factory.createUser(name, CPF, email, passwordHash);
-        this.doctorRepository.add(doctor);
-        return doctor;
+    public Doctor create(String name, String CPF, String email, String password, String crm, String specialty) {
+        return registrationService.createDoctor(name, CPF, email, password, crm, specialty);
     }
 
     public boolean edit(String id, String name, String CPF, String email, String passwordHash) {
-        Doctor doctor = this.doctorRepository.findById(id);
-        if (doctor == null) {
+        if (this.doctorRepository.findById(id).isEmpty()) {
             return false;
         }
         // atualizar campos do doctor aqui

@@ -31,8 +31,21 @@ public abstract class User implements iUser {
         this.type = type;
     }
 
-    public String getId() {
+    @Override
+    public String getID() {
         return ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCPF() {
+        return CPF;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override
@@ -40,4 +53,3 @@ public abstract class User implements iUser {
 
     }
 }
-

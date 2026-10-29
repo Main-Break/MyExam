@@ -2,10 +2,10 @@ package com.mainbreak.model;
 
 import com.mainbreak.model.enums.UserType;
 
-public class PatientFactory extends UserFactory {
-
+public class PatientFactory extends UserFactory<Patient> {
     @Override
-    public User createUser(String name, String CPF, String email, String passwordHash) {
-        return new Patient(name, CPF, email, passwordHash, UserType.PATIENT);
+    public Patient createUser(UserRegistration registration) {
+        return new Patient(registration.getName(), registration.getCPF(), registration.getEmail(),
+                registration.getPasswordHash(), UserType.PATIENT, registration.getBirthDate());
     }
 }
