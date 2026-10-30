@@ -3,6 +3,11 @@ package com.mainbreak.view.action;
 import com.mainbreak.controller.DoctorController;
 import java.util.Scanner;
 
+/**
+ * Lê os dados do médico pelo terminal e aciona o cadastro.
+ *
+ * @note Papel no Padrão: Concrete Command (Command)
+ */
 public class CreateDoctorAction implements MenuAction {
 
     private final DoctorController doctorController;

@@ -20,6 +20,11 @@ import com.mainbreak.view.action.CreatePatientAction;
 
 import java.security.SecureRandom;
 
+/**
+ * Ponto de entrada: monta as dependências e o menu interativo.
+ *
+ * @note Papel no Padrão: Client (Factory Method e Command)
+ */
 public class Main {
 
     public static void main(String[] args) {

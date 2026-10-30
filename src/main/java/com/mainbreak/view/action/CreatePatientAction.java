@@ -6,6 +6,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+/**
+ * Lê os dados do paciente pelo terminal e aciona o cadastro.
+ *
+ * @note Papel no Padrão: Concrete Command (Command)
+ */
 public class CreatePatientAction implements MenuAction {
 
     private final PatientController patientController;
