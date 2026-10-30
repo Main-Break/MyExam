@@ -2,22 +2,57 @@ package com.mainbreak.view.action;
 
 import java.util.Scanner;
 
-//A LoggingActionDecorator vai registrar o início e o fim de ação utilizando o design patern de padrões estruturais chamado "Decorator" .
-//O Decorator vai adicionar novas responsabilidades ou funcionalidades a um objeto sem precisar modificar a sua classe original. 
-public class LoggingActionDecorator implements MenuAction {
-    //O 'implements MenuAction' vai garantir que o Decorator possa ser utilizado como se fosse qualquer outra ação do menu.
-    
-    private final MenuAction avisoAcao;
-    //'private final MenuAction avisoAcao' vai guardar a acao original que vai ser executada, como cadastrar um médico.
+/**
+ * Classe responsável por adicionar registros de execução (logs)
+ * às ações do menu, utilizando o padrão estrutural Decorator.
+ *
+ * O Decorator permite adicionar novas responsabilidades a um
+ * objeto sem precisar modificar sua classe original.
+ *
+ * Nesta implementação, são exibidas mensagens no terminal
+ * indicando o início, o término ou a ocorrência de erros
+ * durante a execução de uma ação.
+ *
+ * A classe implementa a interface MenuAction para que possa
+ * ser utilizada como qualquer outra ação do menu.
+ *
+ * @author João
+ * @see MenuAction
+ */
 
+public class LoggingActionDecorator implements MenuAction {
+    
+    /**
+     * Armazena a ação original que será executada pelo Decorator.
+     *
+     * O atributo é do tipo MenuAction para permitir que diferentes
+     * ações do menu sejam utilizadas.
+     */
+    private final MenuAction avisoAcao;
+
+    /**
+     * Construtor responsável por receber a ação que será decorada.
+     *
+     * @param avisoAcao ação original que receberá os registros de execução.
+     */
     public LoggingActionDecorator(MenuAction avisoAcao) {
-        //'LoggingActionDecorator(MenuAction avisoAcao)' vai receber a ação original pelo construtor.
         this.avisoAcao = avisoAcao;
     }
 
+     /**
+     * Executa a ação original adicionando mensagens de log
+     * antes e depois da sua execução.
+     *
+     * Caso ocorra uma RuntimeException, uma mensagem de erro
+     * será exibida e a exceção será repassada.
+     *
+     * @param scanner objeto responsável pela leitura dos dados
+     *                digitados pelo usuário.
+     * @throws RuntimeException caso ocorra um erro durante
+     *         a execução da ação original.
+     */
     @Override
     public void execute(Scanner scanner) {
-        //O 'execute(Scanner scanner)' vai imprimir uma mensagem, executar a ação original e imprimir uma outra mensagem ao terminar.
         System.out.println("[LOG] Iniciando a ação.");
 
         try {
@@ -27,7 +62,6 @@ public class LoggingActionDecorator implements MenuAction {
             System.out.println("[LOG] Erro durante a ação.");
             throw e;
         }
-        //O 'try/catch' vai registrar uma mensagem se ocorrer uma exceção do tipo RuntimeException e depois vai repassá-la
     }
 }
 
