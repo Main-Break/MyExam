@@ -2,6 +2,11 @@ package com.mainbreak.model;
 
 import com.mainbreak.model.enums.UserType;
 
+/**
+ * Usuário do tipo médico, criado pela DoctorFactory.
+ *
+ * @note Papel no Padrão: Concrete Product (Factory Method)
+ */
 public class Doctor extends User {
     private String crm;
     private String specialty;

@@ -5,6 +5,11 @@ import com.mainbreak.view.action.MenuAction;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Laço do menu principal: lê a opção escolhida e dispara a MenuAction associada.
+ *
+ * @note Papel no Padrão: Invoker (Command)
+ */
 public class CLI extends Menu {
 
     private ArrayList<Option> listOptions = new ArrayList<Option>();

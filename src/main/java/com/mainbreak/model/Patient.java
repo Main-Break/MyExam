@@ -4,6 +4,11 @@ import com.mainbreak.model.enums.UserType;
 
 import java.time.LocalDate;
 
+/**
+ * Usuário do tipo paciente, criado pela PatientFactory.
+ *
+ * @note Papel no Padrão: Concrete Product (Factory Method)
+ */
 public class Patient extends User {
     private final LocalDate birthDate;
 

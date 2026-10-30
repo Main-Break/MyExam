@@ -19,6 +19,7 @@ import java.util.Objects;
  * @author Stephani
  * @see DoctorController
  * @see PatientController
+ * @note Papel no Padrão: Facade (Facade)
  */
 public class CadastroFacade {
     
@@ -55,6 +56,7 @@ public class CadastroFacade {
      * @return objeto Doctor criado pelo serviço de cadastro.
      */
     public Doctor cadastrarMedico(String name, String cpf, String email, String password, String crm, String specialty) {
+        System.out.println("[Facade] Encaminhando cadastro de médico para o DoctorController.");
         return doctorController.create(name, cpf, email, password, crm, specialty);
     }
 
@@ -69,6 +71,7 @@ public class CadastroFacade {
      * @return objeto Patient criado pelo serviço de cadastro.
      */
     public Patient cadastrarPaciente(String name, String cpf, String email, String password, LocalDate birthDate) {
+        System.out.println("[Facade] Encaminhando cadastro de paciente para o PatientController.");
         return patientController.create(name, cpf, email, password, birthDate);
     }
 }

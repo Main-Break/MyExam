@@ -18,8 +18,15 @@ import com.mainbreak.service.validation.UniqueRegistrationValidationHandler;
 import com.mainbreak.view.CLI;
 import com.mainbreak.view.action.CreateDoctorAction;
 import com.mainbreak.view.action.CreatePatientAction;
+import com.mainbreak.view.action.LoggingActionDecorator;
+
 import java.security.SecureRandom;
 
+/**
+ * Ponto de entrada: monta as dependências e o menu interativo.
+ *
+ * @note Papel no Padrão: Client (Factory Method e Command)
+ */
 public class Main {
 
     public static void main(String[] args) {
@@ -40,8 +47,9 @@ public class Main {
 
         CLI menuCLI = new CLI();
 
-        menuCLI.addOption(1, "Cadastrar Medico", new CreateDoctorAction(cadastroFacade));
-        menuCLI.addOption(2, "Cadastrar Paciente", new CreatePatientAction(cadastroFacade));
+        menuCLI.addOption(1, "Cadastrar Medico", new LoggingActionDecorator(new CreateDoctorAction(cadastroFacade)));
+        menuCLI.addOption(2, "Cadastrar Paciente", new LoggingActionDecorator(new CreatePatientAction(cadastroFacade)));
+        // menuCLI.addOption(3, "Cadastrar Consulta", new CreateAppointmentAction(controllerAppointment));
 
         menuCLI.startCLI();
     }

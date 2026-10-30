@@ -5,6 +5,11 @@ import com.mainbreak.model.enums.UserType;
 
 import java.util.UUID;
 
+/**
+ * Dados e regras comuns a todo usuário do sistema.
+ *
+ * @note Papel no Padrão: Product (Factory Method)
+ */
 public abstract class User implements iUser {
     // UUID-v4, não utilizar um ID incremental!
     protected String ID;
