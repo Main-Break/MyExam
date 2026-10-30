@@ -4,6 +4,8 @@ import com.mainbreak.model.Doctor;
 import com.mainbreak.repository.DoctorRepository;
 import com.mainbreak.service.RegistrationService;
 
+import java.util.List;
+
 public class DoctorController {
     private final DoctorRepository doctorRepository;
     private final RegistrationService registrationService;
@@ -24,5 +26,9 @@ public class DoctorController {
         }
         // atualizar campos do doctor aqui
         return true;
+    }
+
+    public List<Doctor> list() {
+        return this.doctorRepository.findAll();
     }
 }
