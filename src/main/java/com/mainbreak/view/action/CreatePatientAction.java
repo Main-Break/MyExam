@@ -1,7 +1,6 @@
 package com.mainbreak.view.action;
 
-import com.mainbreak.controller.PatientController;
-
+import com.mainbreak.controller.CadastroFacade;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -13,14 +12,17 @@ import java.util.Scanner;
  */
 public class CreatePatientAction implements MenuAction {
 
-    private final PatientController patientController;
+    private final CadastroFacade cadastroFacade;
 
-    public CreatePatientAction(PatientController patientController) {
-        this.patientController = patientController;
+    public CreatePatientAction(CadastroFacade cadastroFacade) {
+        this.cadastroFacade = cadastroFacade;
     }
 
     @Override
     public void execute(Scanner scanner) {
+
+        System.out.println("\n=== CADASTRO DE PACIENTE ===");
+
         System.out.print("Nome: ");
         String name = scanner.nextLine();
 
@@ -35,17 +37,23 @@ public class CreatePatientAction implements MenuAction {
 
         LocalDate birthDate = readBirthDate(scanner);
 
-        this.patientController.create(name, cpf, email, password, birthDate);
+        cadastroFacade.cadastrarPaciente(name, cpf, email, password, birthDate);
+
         System.out.println("Paciente cadastrado com sucesso!");
     }
 
-    // Repete a leitura para que uma data fora do formato não interrompa o cadastro.
     private LocalDate readBirthDate(Scanner scanner) {
+
         while (true) {
+
             System.out.print("Data de nascimento (AAAA-MM-DD): ");
+
             try {
+
                 return LocalDate.parse(scanner.nextLine());
+
             } catch (DateTimeParseException exception) {
+
                 System.out.println("Data inválida. Use o formato AAAA-MM-DD.");
             }
         }

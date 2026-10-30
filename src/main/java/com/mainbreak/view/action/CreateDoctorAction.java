@@ -1,6 +1,6 @@
 package com.mainbreak.view.action;
 
-import com.mainbreak.controller.DoctorController;
+import com.mainbreak.controller.CadastroFacade;
 import java.util.Scanner;
 
 /**
@@ -10,14 +10,17 @@ import java.util.Scanner;
  */
 public class CreateDoctorAction implements MenuAction {
 
-    private final DoctorController doctorController;
+    private final CadastroFacade cadastroFacade;
 
-    public CreateDoctorAction(DoctorController doctorController) {
-        this.doctorController = doctorController;
+    public CreateDoctorAction(CadastroFacade cadastroFacade) {
+        this.cadastroFacade = cadastroFacade;
     }
 
     @Override
     public void execute(Scanner scanner) {
+
+        System.out.println("\n=== CADASTRO DE MÉDICO ===");
+
         System.out.print("Nome: ");
         String name = scanner.nextLine();
 
@@ -36,7 +39,8 @@ public class CreateDoctorAction implements MenuAction {
         System.out.print("Especialidade: ");
         String specialty = scanner.nextLine();
 
-        this.doctorController.create(name, cpf, email, password, crm, specialty);
+        cadastroFacade.cadastrarMedico(name, cpf, email, password, crm, specialty);
+
         System.out.println("Médico cadastrado com sucesso!");
     }
 }

@@ -17,7 +17,7 @@ Sistema de gestão de consultas médicas (Doctor, Nurse, Patient, Appointment), 
 | Builder | Criacional | Monta `UserRegistration` passo a passo, separando dados comuns dos campos específicos do médico e do paciente. O log do terminal indica cada perfil montado. |
 | Command | Comportamental | Cada opção do menu (`Cadastrar Médico`, `Cadastrar Paciente`, etc.) é encapsulada como um objeto `MenuAction` (`CreateDoctorAction`, `CreatePatientAction`). O CLI não conhece a lógica de cada cadastro, apenas invoca `execute()`, permitindo adicionar novas opções sem alterar o laço principal do menu. |
 | Decorator | Estrutural | Adiciona log de início, fim e erro na execução de uma `MenuAction` (`LoggingActionDecorator`) sem alterar `CreateDoctorAction`/`CreatePatientAction`. Novas ações ganham o log só envolvendo a ação original na hora de montar o menu. |
-| _A definir_ | Estrutural | _Pendente: segundo padrão estrutural._ |
+| Facade | Estrutural | `CadastroFacade` reúne o cadastro de médico e de paciente numa única interface para as `MenuAction`, que deixam de conhecer `DoctorController` e `PatientController` diretamente. |
 | Chain of Responsibility | Comportamental | Encadeia validação dos campos comuns, dos campos específicos do perfil e da unicidade de e-mail, CPF e CRM. Cada elo registra no terminal quando é acionado. |
 
 O cadastro é coordenado por `RegistrationService`, que recebe as factories, o `PasswordHasher`, os repositórios e a cadeia de validação por construtor. A senha é transformada em hash antes de finalizar o `UserRegistration`; somente o hash é encaminhado à Factory Method.
@@ -31,7 +31,7 @@ O cadastro é coordenado por `RegistrationService`, que recebe as factories, o `
 ## Estrutura do projeto
 
 src/main/java/com/mainbreak/
-├── controller/     # Orquestra casos de uso, liga repository e factory
+├── controller/     # Orquestra casos de uso, liga repository e factory; Facade (CadastroFacade)
 ├── interfaces/      # Contratos (iUser)
 ├── model/
 │   ├── enums/        # UserType, AppointmentStatus
