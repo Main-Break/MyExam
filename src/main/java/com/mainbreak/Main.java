@@ -1,5 +1,6 @@
 package com.mainbreak;
 
+import com.mainbreak.controller.CadastroFacade;
 import com.mainbreak.controller.DoctorController;
 import com.mainbreak.controller.PatientController;
 import com.mainbreak.model.DoctorFactory;
@@ -17,7 +18,6 @@ import com.mainbreak.service.validation.UniqueRegistrationValidationHandler;
 import com.mainbreak.view.CLI;
 import com.mainbreak.view.action.CreateDoctorAction;
 import com.mainbreak.view.action.CreatePatientAction;
-
 import java.security.SecureRandom;
 
 public class Main {
@@ -29,39 +29,33 @@ public class Main {
         AppointmentRepository appointmentRepository = new AppointmentRepository();
 
         PasswordHasher passwordHasher = new Pbkdf2PasswordHasher(new SecureRandom());
-        RegistrationValidationHandler validationChain = createRegistrationValidationChain(
-                doctorRepository, patientRepository);
-        RegistrationService registrationService = new RegistrationService(
-                doctorRepository,
-                patientRepository,
-                new DoctorFactory(),
-                new PatientFactory(),
-                passwordHasher,
-                validationChain
-        );
+
+        RegistrationValidationHandler validationChain = createRegistrationValidationChain(doctorRepository, patientRepository);
+        RegistrationService registrationService = new RegistrationService(doctorRepository, patientRepository, new DoctorFactory(), new PatientFactory(), passwordHasher, validationChain);
 
         DoctorController controllerDoctor = new DoctorController(doctorRepository, registrationService);
         PatientController controllerPatient = new PatientController(registrationService);
-        // AppointmentController controllerAppointment = new AppointmentController(appointmentRepository, doctorRepository, patientRepository);
+
+        CadastroFacade cadastroFacade = new CadastroFacade(controllerDoctor, controllerPatient);
 
         CLI menuCLI = new CLI();
 
-        menuCLI.addOption(1, "Cadastrar Medico", new CreateDoctorAction(controllerDoctor));
-        menuCLI.addOption(2, "Cadastrar Paciente", new CreatePatientAction(controllerPatient));
-        // menuCLI.addOption(3, "Cadastrar Consulta", new CreateAppointmentAction(controllerAppointment));
+        menuCLI.addOption(1, "Cadastrar Medico", new CreateDoctorAction(cadastroFacade));
+        menuCLI.addOption(2, "Cadastrar Paciente", new CreatePatientAction(cadastroFacade));
 
         menuCLI.startCLI();
     }
 
-    // Monta a cadeia de validação e injeta os repositórios usados pelo último elo.
-    private static RegistrationValidationHandler createRegistrationValidationChain(
-            DoctorRepository doctorRepository, PatientRepository patientRepository) {
+    private static RegistrationValidationHandler createRegistrationValidationChain(DoctorRepository doctorRepository, PatientRepository patientRepository) {
+
         RegistrationValidationHandler common = new CommonRegistrationValidationHandler();
         RegistrationValidationHandler profile = new ProfileRegistrationValidationHandler();
-        RegistrationValidationHandler unique =
-                new UniqueRegistrationValidationHandler(doctorRepository, patientRepository);
+        RegistrationValidationHandler unique = new UniqueRegistrationValidationHandler(doctorRepository, patientRepository);
+
         common.setNext(profile);
         profile.setNext(unique);
+
         return common;
     }
 }
+
