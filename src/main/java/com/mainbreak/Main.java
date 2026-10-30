@@ -17,6 +17,7 @@ import com.mainbreak.service.validation.UniqueRegistrationValidationHandler;
 import com.mainbreak.view.CLI;
 import com.mainbreak.view.action.CreateDoctorAction;
 import com.mainbreak.view.action.CreatePatientAction;
+import com.mainbreak.view.action.LoggingActionDecorator;
 
 import java.security.SecureRandom;
 
@@ -51,8 +52,8 @@ public class Main {
 
         CLI menuCLI = new CLI();
 
-        menuCLI.addOption(1, "Cadastrar Medico", new CreateDoctorAction(controllerDoctor));
-        menuCLI.addOption(2, "Cadastrar Paciente", new CreatePatientAction(controllerPatient));
+        menuCLI.addOption(1, "Cadastrar Medico", new LoggingActionDecorator(new CreateDoctorAction(controllerDoctor)));
+        menuCLI.addOption(2, "Cadastrar Paciente", new LoggingActionDecorator(new CreatePatientAction(controllerPatient)));
         // menuCLI.addOption(3, "Cadastrar Consulta", new CreateAppointmentAction(controllerAppointment));
 
         menuCLI.startCLI();
