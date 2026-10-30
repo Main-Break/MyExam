@@ -1,22 +1,18 @@
 package com.mainbreak.controller;
 
 import com.mainbreak.model.Patient;
-import com.mainbreak.model.PatientFactory;
-import com.mainbreak.model.UserFactory;
-import com.mainbreak.repository.PatientRepository;
+import com.mainbreak.service.RegistrationService;
+
+import java.time.LocalDate;
 
 public class PatientController {
+    private final RegistrationService registrationService;
 
-    private final PatientRepository patientRepository;
-
-    public PatientController(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
+    public PatientController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
     }
 
-    public Patient create(String name, String CPF, String email, String passwordHash) {
-        UserFactory factory = new PatientFactory();
-        Patient patient = (Patient) factory.createUser(name, CPF, email, passwordHash);
-        this.patientRepository.add(patient);
-        return patient;
+    public Patient create(String name, String CPF, String email, String password, LocalDate birthDate) {
+        return registrationService.createPatient(name, CPF, email, password, birthDate);
     }
 }

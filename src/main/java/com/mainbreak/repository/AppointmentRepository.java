@@ -1,9 +1,9 @@
 package com.mainbreak.repository;
 
 import com.mainbreak.model.Appointment;
-import com.mainbreak.model.Doctor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AppointmentRepository {
 
@@ -13,13 +13,13 @@ public class AppointmentRepository {
         this.appointments.add(appointment);
     }
 
-    public Appointment findById(String id) {
+    public Optional<Appointment> findById(String id) {
         for (Appointment appointment : this.appointments) {
             if (appointment.getID().equals(id)) {
-                return appointment;
+                return Optional.of(appointment);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public List<Appointment> findAll() {
