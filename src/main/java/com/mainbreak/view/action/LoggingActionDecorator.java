@@ -18,6 +18,7 @@ import java.util.Scanner;
  *
  * @author João
  * @see MenuAction
+ * @note Papel no Padrão: Concrete Decorator (Decorator)
  */
 
 public class LoggingActionDecorator implements MenuAction {

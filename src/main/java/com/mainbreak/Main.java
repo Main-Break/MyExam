@@ -47,17 +47,10 @@ public class Main {
 
         CLI menuCLI = new CLI();
 
-        /*
-        Antes (Kainan):
-        menuCLI.addOption(1, "Cadastrar Medico", new CreateDoctorAction(controllerDoctor));
-        menuCLI.addOption(2, "Cadastrar Paciente", new CreatePatientAction(controllerPatient));
-        menuCLI.addOption(3, "Cadastrar Consulta", new CreateAppointmentAction(controllerAppointment));
-        */
-
-        //Depois (João):
         menuCLI.addOption(1, "Cadastrar Medico", new LoggingActionDecorator(new CreateDoctorAction(controllerDoctor)));
         menuCLI.addOption(2, "Cadastrar Paciente", new LoggingActionDecorator(new CreatePatientAction(controllerPatient)));
-        
+        // menuCLI.addOption(3, "Cadastrar Consulta", new CreateAppointmentAction(controllerAppointment));
+
         menuCLI.startCLI();
     }
 

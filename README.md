@@ -16,7 +16,7 @@ Sistema de gestão de consultas médicas (Doctor, Nurse, Patient, Appointment), 
 | Factory Method | Criacional | Centraliza a criação de `Doctor`, `Nurse` e `Patient` em classes dedicadas (`DoctorFactory`, `NurseFactory`, `PatientFactory`). Os construtores dos modelos são `protected`, garantindo que nenhuma outra camada crie um usuário fora desse ponto controlado. |
 | Builder | Criacional | Monta `UserRegistration` passo a passo, separando dados comuns dos campos específicos do médico e do paciente. O log do terminal indica cada perfil montado. |
 | Command | Comportamental | Cada opção do menu (`Cadastrar Médico`, `Cadastrar Paciente`, etc.) é encapsulada como um objeto `MenuAction` (`CreateDoctorAction`, `CreatePatientAction`). O CLI não conhece a lógica de cada cadastro, apenas invoca `execute()`, permitindo adicionar novas opções sem alterar o laço principal do menu. |
-| _A definir_ | Estrutural | _Pendente: primeiro padrão estrutural (ex.: Adapter, Decorator, Facade)._ |
+| Decorator | Estrutural | Adiciona log de início, fim e erro na execução de uma `MenuAction` (`LoggingActionDecorator`) sem alterar `CreateDoctorAction`/`CreatePatientAction`. Novas ações ganham o log só envolvendo a ação original na hora de montar o menu. |
 | _A definir_ | Estrutural | _Pendente: segundo padrão estrutural._ |
 | Chain of Responsibility | Comportamental | Encadeia validação dos campos comuns, dos campos específicos do perfil e da unicidade de e-mail, CPF e CRM. Cada elo registra no terminal quando é acionado. |
 
@@ -41,7 +41,7 @@ src/main/java/com/mainbreak/
 ├── service/          # Cadastro com Builder, Factory Method e Chain of Responsibility
 │   └── validation/   # Elos de validação de cadastro
 ├── view/
-│   └── action/       # Command (MenuAction e implementações)
+│   └── action/       # Command (MenuAction e implementações) e Decorator (LoggingActionDecorator)
 └── Main.java          # Ponto de entrada, monta o menu interativo
 
 ## Equipe
