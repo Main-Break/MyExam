@@ -29,7 +29,7 @@ O cadastro é coordenado por `RegistrationService`, que recebe as factories, o `
 `PasswordHasher` é uma interface injetada no serviço. `Pbkdf2PasswordHasher` implementa PBKDF2 com HMAC-SHA-256, salt aleatório e 120.000 iterações. A aplicação usa somente APIs padrão do Java e não adiciona bibliotecas externas.
 
 ## Estrutura do projeto
-
+```Text
 src/main/java/com/mainbreak/
 ├── controller/     # Orquestra casos de uso, liga repository e factory; Facade (CadastroFacade)
 ├── interfaces/      # Contratos (iUser)
@@ -43,7 +43,7 @@ src/main/java/com/mainbreak/
 ├── view/
 │   └── action/       # Command (MenuAction e implementações) e Decorator (LoggingActionDecorator)
 └── Main.java          # Ponto de entrada, monta o menu interativo
-
+```
 ## Equipe
 
 - KAINAN HENRIQUE COUTO DOS SANTOS
