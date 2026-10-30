@@ -38,7 +38,11 @@ public class CLI extends Menu {
                 continue;
             }
 
-            selected.action.execute(this.scanner);
+            try {
+                selected.action.execute(this.scanner);
+            } catch (RuntimeException exception) {
+                System.out.println("Não foi possível concluir: " + exception.getMessage());
+            }
         }
     }
 
