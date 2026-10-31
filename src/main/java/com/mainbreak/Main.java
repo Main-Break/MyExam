@@ -1,5 +1,6 @@
 package com.mainbreak;
 
+import com.mainbreak.controller.AppointmentController;
 import com.mainbreak.controller.CadastroFacade;
 import com.mainbreak.controller.DoctorController;
 import com.mainbreak.controller.PatientController;
@@ -16,8 +17,12 @@ import com.mainbreak.service.validation.ProfileRegistrationValidationHandler;
 import com.mainbreak.service.validation.RegistrationValidationHandler;
 import com.mainbreak.service.validation.UniqueRegistrationValidationHandler;
 import com.mainbreak.view.CLI;
+import com.mainbreak.view.action.CreateAppointmentAction;
 import com.mainbreak.view.action.CreateDoctorAction;
 import com.mainbreak.view.action.CreatePatientAction;
+import com.mainbreak.view.action.ListAppointmentsAction;
+import com.mainbreak.view.action.ListDoctorsAction;
+import com.mainbreak.view.action.ListPatientsAction;
 import com.mainbreak.view.action.LoggingActionDecorator;
 
 import java.security.SecureRandom;
@@ -41,7 +46,9 @@ public class Main {
         RegistrationService registrationService = new RegistrationService(doctorRepository, patientRepository, new DoctorFactory(), new PatientFactory(), passwordHasher, validationChain);
 
         DoctorController controllerDoctor = new DoctorController(doctorRepository, registrationService);
-        PatientController controllerPatient = new PatientController(registrationService);
+        PatientController controllerPatient = new PatientController(patientRepository, registrationService);
+        AppointmentController controllerAppointment =
+                new AppointmentController(appointmentRepository, doctorRepository, patientRepository);
 
         CadastroFacade cadastroFacade = new CadastroFacade(controllerDoctor, controllerPatient);
 
@@ -49,7 +56,10 @@ public class Main {
 
         menuCLI.addOption(1, "Cadastrar Medico", new LoggingActionDecorator(new CreateDoctorAction(cadastroFacade)));
         menuCLI.addOption(2, "Cadastrar Paciente", new LoggingActionDecorator(new CreatePatientAction(cadastroFacade)));
-        // menuCLI.addOption(3, "Cadastrar Consulta", new CreateAppointmentAction(controllerAppointment));
+        menuCLI.addOption(3, "Listar Medicos", new LoggingActionDecorator(new ListDoctorsAction(controllerDoctor)));
+        menuCLI.addOption(4, "Listar Pacientes", new LoggingActionDecorator(new ListPatientsAction(controllerPatient)));
+        menuCLI.addOption(5, "Cadastrar Consulta", new LoggingActionDecorator(new CreateAppointmentAction(controllerAppointment)));
+        menuCLI.addOption(6, "Listar Consultas", new LoggingActionDecorator(new ListAppointmentsAction(controllerAppointment)));
 
         menuCLI.startCLI();
     }
@@ -66,4 +76,3 @@ public class Main {
         return common;
     }
 }
-
